@@ -21,6 +21,7 @@ private:
 	float projectionMatrix[16];
 	float viewMM[16];
 	float rotAngle;
+	float camRot;
 	unsigned int scWidth, scHeight;
 
 	CShaderBase* directShader;
@@ -80,7 +81,7 @@ private:
 			0.0f, 0.0f, 0.0f, 1.0f,
 		};
 
-		rotAngle += 3.1415926f / 180.0f * (10.0f * elapsedTime);
+		rotAngle += 3.1415926f / 180.0f * (20.0f * elapsedTime);
 		GLfloat rotationMatrix[16] =
 		{
 			cosf(rotAngle), 0.0f, sinf(rotAngle), 0.0f,
@@ -89,12 +90,13 @@ private:
 			0.0f, 0.0f, 0.0f, 1.0f, 
 		};
 
+		camRot += 3.1415926f / 180.0f * (40.0f * elapsedTime);
 
 		float perspectiveMatrix[4][4]{ 0 };
 		orthoMatrix4x4(-1.0f, 1.0f, -1.3333f, 1.3333f, -0.01f, 100.0f, perspectiveMatrix);
 
 		float viewMatrix[4][4]{ 0 };
-		float eye[3] { 5.0f, 5.0f, 5.0f };
+		float eye[3] { sinf(camRot), 1.0f, -cosf(camRot)};
 		float center[3] { 0.0f, 0.0f, 0.0f };
 		float up[3] { 0.0f, 1.0f, 0.0f };
 
@@ -296,6 +298,64 @@ private:
 
 		GLfloat g_vertex_buffer_data[] =
 		{
+			-0.3f, 0.0f, 0.3f,  // Base izquierda trasera
+			 0.3f, 0.0f, 0.3f,  // Base derecha trasera
+			-0.3f, 0.0f, -0.3f, // Base izquierda frontal
+			
+			 0.3f, 0.0f, 0.3f,  // Base derecha trasera
+			 0.3f, 0.0f, -0.3f, // Base derecha frontal
+			-0.3f, 0.0f, -0.3f, // Base izquierda frontal
+			
+			// Caras de la pirámide
+			-0.3f, 0.0f,  0.3f,  // Base izquierda trasera
+			 0.3f, 0.0f,  0.3f,  // Base derecha trasera
+			 0.0f, 0.6f,  0.0f,  // Vértice superior
+			
+			 0.3f, 0.0f,  0.3f,  // Base derecha trasera
+			 0.3f, 0.0f, -0.3f,  // Base derecha frontal
+			 0.0f, 0.6f,  0.0f,  // Vértice superior
+			
+			 0.3f, 0.0f, -0.3f,  // Base derecha frontal
+			-0.3f, 0.0f, -0.3f,  // Base izquierda frontal
+			 0.0f, 0.6f,  0.0f,  // Vértice superior
+			
+			-0.3f, 0.0f, -0.3f,  // Base izquierda frontal
+			-0.3f, 0.0f,  0.3f,  // Base izquierda trasera
+			 0.0f, 0.6f,  0.0f,  // Vértice superior
+		};
+
+		GLfloat colores[] =
+		{
+			// Base de la pirámide
+			1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 1.0f,
+			
+			1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 1.0f,
+			
+			// Caras de la pirámide
+			1.0f, 1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f,
+			
+			0.0f, 1.0f, 1.0f,
+			0.0f, 1.0f, 1.0f,
+			0.0f, 1.0f, 1.0f,
+			
+			1.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 1.0f,
+			
+			0.0f, 1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+		};
+
+		// Cubo
+		/*GLfloat g_vertex_buffer_data[] =
+		{
 			//frente
 			-0.3f, -0.3f, 0.0f,
 			0.3f, -0.3f, 0.0f,
@@ -370,7 +430,7 @@ private:
 			0.5f, 1.0f, 0.5f,
 			1.0f, 0.5f, 0.5f,
 			0.5f, 0.5f, 1.0f,
-		};
+		};*/
 
 		int pointCount = sizeof(g_vertex_buffer_data) / sizeof(g_vertex_buffer_data[0]);
 		int colorCount = sizeof(colores) / sizeof(colores[0]);
